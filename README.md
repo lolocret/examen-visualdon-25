@@ -1,19 +1,19 @@
-# Examen Visualdon - 28 août 2024
+# Examen Visualdon - 25 juin 2025
 
 Le travail sera rendu au plus tard à 16h15, par Teams.
 
 Vous rendrez un **fichier ZIP** de tout votre projet excepté le dossier `node_modules` et vous donnerez votre nom de famille, prénom et classe à ce dossier (_nom_prenom_classe.zip_). Vous êtes responsable de son contenu et devez vous assurer de la bonne réception du dossier avant de quitter la salle.
 
-Pour accéder à la version en ligne de la donnée de l'examen, visitez [https://github.com/romanoe/examen-visualdon-24-rattrapages/](https://github.com/romanoe/examen-visualdon-24-rattrapages/)
+Pour accéder à la version en ligne de la donnée de l'examen, visitez [https://github.com/romanoe/examen-visualdon-25/](https://github.com/romanoe/examen-visualdon-25/)
 
 ## Installation
 
-Clonez ou téléchargez le zip de ce [dossier](<[https://github.com/romanoe/examen-visualdon-24-rattrapages/](https://github.com/romanoe/examen-visualdon-24-rattrapages/archive/refs/heads/main.zip)>)
+Clonez ou téléchargez le zip de ce [dossier](<[https://github.com/romanoe/examen-visualdon-25/](https://github.com/romanoe/examen-visualdon-25/archive/refs/heads/main.zip)>)
 
--   **SSH**: `git clone git@github.com:romanoe/examen-visualdon-24-rattrapages.git`
--   ou **HTTPS**: `git clone https://github.com/romanoe/examen-visualdon-24-rattrapages.git`
+-   **SSH**: `git clone git@github.com:romanoe/examen-visualdon-25.git`
+-   ou **HTTPS**: `git clone https://github.com/romanoe/examen-visualdon-25.git`
 
-Rentrez dans le dossier _examen-visualdon-24_ : `cd examen-visualdon-24-rattrapages`
+Rentrez dans le dossier _examen-visualdon-25_ : `cd examen-visualdon-25`
 
 Installez les packages nécessaires :
 
