@@ -79,8 +79,46 @@ Promise.all([
     attribution: "&copy; OpenStreetMap"
   }).addTo(map);
 
+  const title = L.control({ position: "topright" });
+  const legend = L.control({ position: "bottomright" });
   const ratios = cantonsData.map(d => d.ratio);
   const colorScale = d3.scaleSequential().domain([d3.min(ratios), d3.max(ratios)]).interpolator(d3.interpolateYlGnBu);
+
+title.onAdd = function (map) {
+  const div = L.DomUtil.create("div", "map-title");
+  div.innerHTML = "<h4>Passagers par 10'000 habitants</h4>";
+  div.style.background = "white";
+  div.style.padding = "8px";
+  div.style.borderRadius = "6px";
+  div.style.boxShadow = "0 0 5px rgba(0,0,0,0.3)";
+  return div;
+};
+
+title.addTo(map);
+
+
+legend.onAdd = function (map) {
+  const div = L.DomUtil.create("div", "info legend");
+  const grades = d3.ticks(d3.min(ratios), d3.max(ratios), 5);
+
+  div.innerHTML += "<strong>Pass./10k hab</strong><br>";
+
+  grades.forEach((d, i) => {
+    const color = colorScale(d);
+    div.innerHTML += `
+      <i style="background:${color};width:18px;height:18px;display:inline-block;margin-right:5px;"></i> 
+      ${Math.round(d)}<br>`;
+  });
+
+  div.style.background = "white";
+  div.style.padding = "8px";
+  div.style.borderRadius = "6px";
+  div.style.boxShadow = "0 0 5px rgba(0,0,0,0.3)";
+
+  return div;
+};
+
+legend.addTo(map);
 
   L.geoJSON(cantons, {
     style: feature => {
@@ -107,16 +145,21 @@ Promise.all([
     attribution: "&copy; OpenStreetMap"
   }).addTo(map2);
 
-
-  const title = L.control({ position: "topright" });
-  const legend = L.control({ position: "bottomright" });
+  const legend2 = L.control({ position: "bottomright" });
+  const title2 = L.control({ position: "topright" });
   const trafics = network.features.map(d => d.properties.avg_daily_trafic);
   const widthScale = d3.scaleLinear().domain(d3.extent(trafics)).range([1, 8]);
   const colorLine = d3.scaleSequential().domain(d3.extent(trafics)).interpolator(d3.interpolateReds);
 
-  title.onAdd = function (map) {
+console.log("Justification des échelles pour les lignes ferroviaires :");
+console.log("- Échelle linéaire pour l'épaisseur (`widthScale`) : permet une lecture intuitive où les lignes les plus fréquentées sont visiblement plus épaisses.");
+console.log("- Domaine basé sur les valeurs min et max du trafic réel pour bien répartir les largeurs entre 1 et 8 pixels.");
+console.log("- Échelle de couleur séquentielle (`colorLine`) avec interpolateReds : plus la ligne est foncée, plus le trafic est dense. Cela attire visuellement l’attention sur les lignes principales.");
+console.log("- Ces choix facilitent l’interprétation visuelle et permettent de comparer rapidement les segments les plus utilisés.");
+
+title2.onAdd = function () {
   const div = L.DomUtil.create("div", "map-title");
-  div.innerHTML = "<h4>Passagers par 10'000 habitants</h4>";
+  div.innerHTML = "<h4>Réseau ferroviaire - Charge journalière</h4>";
   div.style.background = "white";
   div.style.padding = "8px";
   div.style.borderRadius = "6px";
@@ -124,19 +167,21 @@ Promise.all([
   return div;
 };
 
-title.addTo(map);
+title2.addTo(map2);
 
-legend.onAdd = function (map) {
+legend2.onAdd = function () {
   const div = L.DomUtil.create("div", "info legend");
-  const grades = d3.ticks(d3.min(ratios), d3.max(ratios), 5);
+  const trafics = d3.ticks(d3.min(network.features, d => d.properties.avg_daily_trafic), d3.max(network.features, d => d.properties.avg_daily_trafic), 5);
 
-  div.innerHTML += "<strong>Pass./10k hab</strong><br>";
+  div.innerHTML += "<strong>Trafic (pass./jour)</strong><br>";
 
-  grades.forEach((d, i) => {
-    const color = colorScale(d);
+  trafics.forEach((val, i) => {
+    const color = colorLine(val);
+    const width = widthScale(val);
     div.innerHTML += `
-      <i style="background:${color};width:18px;height:18px;display:inline-block;margin-right:5px;"></i> 
-      ${Math.round(d)}<br>`;
+      <svg width="40" height="10" style="vertical-align:middle; margin-right:5px;">
+        <line x1="0" y1="5" x2="40" y2="5" stroke="${color}" stroke-width="${width}" />
+      </svg> ${Math.round(val)}<br>`;
   });
 
   div.style.background = "white";
@@ -147,7 +192,8 @@ legend.onAdd = function (map) {
   return div;
 };
 
-legend.addTo(map);
+legend2.addTo(map2);
+
 
   L.geoJSON(network, {
     style: feature => ({
@@ -159,6 +205,30 @@ legend.addTo(map);
     }
   }).addTo(map2);
 
+  legend2.onAdd = function () {
+  const div = L.DomUtil.create("div", "info legend");
+  const trafics = d3.ticks(d3.min(network.features, d => d.properties.avg_daily_trafic), d3.max(network.features, d => d.properties.avg_daily_trafic), 5);
+
+  div.innerHTML += "<strong>Trafic (pass./jour)</strong><br>";
+
+  trafics.forEach((val, i) => {
+    const color = colorLine(val);
+    const width = widthScale(val);
+    div.innerHTML += `
+      <svg width="40" height="10" style="vertical-align:middle; margin-right:5px;">
+        <line x1="0" y1="5" x2="40" y2="5" stroke="${color}" stroke-width="${width}" />
+      </svg> ${Math.round(val)}<br>`;
+  });
+
+  div.style.background = "white";
+  div.style.padding = "8px";
+  div.style.borderRadius = "6px";
+  div.style.boxShadow = "0 0 5px rgba(0,0,0,0.3)";
+
+  return div;
+};
+
+legend2.addTo(map2);
 
     // --- 3.3 Diagramme en bâtons ---
     const margin = { top: 40, right: 30, bottom: 30, left: 120 };
