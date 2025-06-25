@@ -107,9 +107,47 @@ Promise.all([
     attribution: "&copy; OpenStreetMap"
   }).addTo(map2);
 
+
+  const title = L.control({ position: "topright" });
+  const legend = L.control({ position: "bottomright" });
   const trafics = network.features.map(d => d.properties.avg_daily_trafic);
   const widthScale = d3.scaleLinear().domain(d3.extent(trafics)).range([1, 8]);
   const colorLine = d3.scaleSequential().domain(d3.extent(trafics)).interpolator(d3.interpolateReds);
+
+  title.onAdd = function (map) {
+  const div = L.DomUtil.create("div", "map-title");
+  div.innerHTML = "<h4>Passagers par 10'000 habitants</h4>";
+  div.style.background = "white";
+  div.style.padding = "8px";
+  div.style.borderRadius = "6px";
+  div.style.boxShadow = "0 0 5px rgba(0,0,0,0.3)";
+  return div;
+};
+
+title.addTo(map);
+
+legend.onAdd = function (map) {
+  const div = L.DomUtil.create("div", "info legend");
+  const grades = d3.ticks(d3.min(ratios), d3.max(ratios), 5);
+
+  div.innerHTML += "<strong>Pass./10k hab</strong><br>";
+
+  grades.forEach((d, i) => {
+    const color = colorScale(d);
+    div.innerHTML += `
+      <i style="background:${color};width:18px;height:18px;display:inline-block;margin-right:5px;"></i> 
+      ${Math.round(d)}<br>`;
+  });
+
+  div.style.background = "white";
+  div.style.padding = "8px";
+  div.style.borderRadius = "6px";
+  div.style.boxShadow = "0 0 5px rgba(0,0,0,0.3)";
+
+  return div;
+};
+
+legend.addTo(map);
 
   L.geoJSON(network, {
     style: feature => ({
@@ -123,7 +161,7 @@ Promise.all([
 
 
     // --- 3.3 Diagramme en bâtons ---
-    const margin = { top: 20, right: 30, bottom: 30, left: 120 };
+    const margin = { top: 40, right: 30, bottom: 30, left: 120 };
   const width = 600 - margin.left - margin.right;
   const height = 400 - margin.top - margin.bottom;
 
@@ -136,11 +174,11 @@ Promise.all([
 
     svgBar.append("text")
   .attr("x", width / 2)
-  .attr("y", -10)
+  .attr("y", -13)
   .attr("text-anchor", "middle")
   .style("font-size", "15px")
   .style("font-weight", "bold")
-  .text("Top 10 des cantons par passagers / 10'000 habitants");
+  .text("Top 10 des cantons charge de passagers / 10'000 habitants");
 
 
   const x = d3.scaleLinear()
