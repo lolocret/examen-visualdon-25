@@ -13,18 +13,46 @@ const svg = d3.select("#drawing");
 const centerX = 300;
 const centerY = 250;
 
-svg.append("line").attr("x1", centerX).attr("y1", centerY - 100).attr("x2", centerX - 80).attr("y2", centerY - 50).attr("stroke", "black").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX).attr("y1", centerY - 100).attr("x2", centerX + 80).attr("y2", centerY - 50).attr("stroke", "black").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX - 80).attr("y1", centerY - 50).attr("x2", centerX - 80).attr("y2", centerY + 80).attr("stroke", "black").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX + 80).attr("y1", centerY - 50).attr("x2", centerX + 80).attr("y2", centerY + 80).attr("stroke", "black").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX - 80).attr("y1", centerY + 80).attr("x2", centerX).attr("y2", centerY + 130).attr("stroke", "black").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX + 80).attr("y1", centerY + 80).attr("x2", centerX).attr("y2", centerY + 130).attr("stroke", "black").attr("stroke-width", 2);
+// Contour noir (hexagone)
+svg.append("line").attr("x1", centerX).attr("y1", centerY - 100).attr("x2", centerX - 100).attr("y2", centerY - 50).attr("stroke", "black").attr("stroke-width", 2);
+svg.append("line").attr("x1", centerX).attr("y1", centerY - 100).attr("x2", centerX + 100).attr("y2", centerY - 50).attr("stroke", "black").attr("stroke-width", 2);
+svg.append("line").attr("x1", centerX - 100).attr("y1", centerY - 50).attr("x2", centerX - 100).attr("y2", centerY + 100).attr("stroke", "black").attr("stroke-width", 2);
+svg.append("line").attr("x1", centerX + 100).attr("y1", centerY - 50).attr("x2", centerX + 100).attr("y2", centerY + 100).attr("stroke", "black").attr("stroke-width", 2);
+svg.append("line").attr("x1", centerX - 100).attr("y1", centerY + 100).attr("x2", centerX).attr("y2", centerY + 150).attr("stroke", "black").attr("stroke-width", 2);
+svg.append("line").attr("x1", centerX + 100).attr("y1", centerY + 100).attr("x2", centerX).attr("y2", centerY + 150).attr("stroke", "black").attr("stroke-width", 2);
+
+// Lignes rouges internes
 svg.append("line").attr("x1", centerX).attr("y1", centerY - 100).attr("x2", centerX).attr("y2", centerY + 50).attr("stroke", "red").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX).attr("y1", centerY + 50).attr("x2", centerX - 80).attr("y2", centerY + 80).attr("stroke", "red").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX).attr("y1", centerY + 50).attr("x2", centerX + 80).attr("y2", centerY + 80).attr("stroke", "red").attr("stroke-width", 2);
-svg.append("line").attr("x1", centerX - 40).attr("y1", centerY + 30).attr("x2", centerX + 10).attr("y2", centerY + 30).attr("stroke", "black").attr("stroke-width", 2);
-svg.append("rect").attr("x", centerX - 110).attr("y", centerY - 70).attr("width", 30).attr("height", 30).attr("stroke", "black").attr("stroke-width", 2).attr("fill", "none");
-svg.append("rect").attr("x", centerX + 80).attr("y", centerY - 70).attr("width", 30).attr("height", 30).attr("stroke", "black").attr("stroke-width", 2).attr("fill", "none");
+svg.append("line").attr("x1", centerX).attr("y1", centerY + 50).attr("x2", centerX - 100).attr("y2", centerY + 100).attr("stroke", "red").attr("stroke-width", 2);
+svg.append("line").attr("x1", centerX).attr("y1", centerY + 50).attr("x2", centerX + 100).attr("y2", centerY + 100).attr("stroke", "red").attr("stroke-width", 2);
+
+// Trait noir horizontal au centre
+svg.append("line")
+  .attr("x1", centerX - 40)
+  .attr("y1", centerY + 70)
+  .attr("x2", centerX + 40)
+  .attr("y2", centerY + 70)
+  .attr("stroke", "black")
+  .attr("stroke-width", 2);
+
+// Petits carrés latéraux
+svg.append("rect")
+  .attr("x", centerX - 130)
+  .attr("y", centerY - 50)
+  .attr("width", 30)
+  .attr("height", 30)
+  .attr("stroke", "black")
+  .attr("stroke-width", 2)
+  .attr("fill", "none");
+
+svg.append("rect")
+  .attr("x", centerX + 100)
+  .attr("y", centerY - 50)
+  .attr("width", 30)
+  .attr("height", 30)
+  .attr("stroke", "black")
+  .attr("stroke-width", 2)
+  .attr("fill", "none");
 
 
 /*
